@@ -14,17 +14,20 @@ public class TerrainTile : MonoBehaviour
         GenerateDots();
     }
 
-    private void GenerateDots()
+    // 🧱 Tạo lại chấm theo dotCount hiện tại
+    public void GenerateDots()
     {
-        if (dotPrefab == null || dotCount <= 0) return;
+        if (dotPrefab == null) return;
 
-        // Nếu có sẵn object chứa chấm thì xóa cũ
+        // Xoá cũ
         if (dotsParent != null)
-            Destroy(dotsParent.gameObject);
+            DestroyImmediate(dotsParent.gameObject);
 
         dotsParent = new GameObject("Dots").transform;
         dotsParent.SetParent(transform);
         dotsParent.localPosition = Vector3.zero;
+
+        if (dotCount <= 0) return;
 
         Vector3[] positions = GetDotPositions(dotCount);
         foreach (var pos in positions)
@@ -35,80 +38,47 @@ public class TerrainTile : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Trả về các vị trí sắp xếp chấm như mặt xúc xắc (1–6)
-    /// </summary>
-    private Vector3[] GetDotPositions(int count)
+    // Giảm dotCount khi rời khỏi ô
+    public void DecreaseDot()
     {
-        float o = dotOffset;
-        switch (count)
+        if (dotCount > 0)
         {
-            case 1: return new[] { Vector3.zero };
-            case 2: return new[] { new Vector3(-o, 0, -o), new Vector3(o, 0, o) };
-            case 3: return new[] { new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, o) };
-            case 4:
-                return new[]
+            dotCount--;
+            if (dotCount == 0)
             {
-                new Vector3(-o, 0, -o), new Vector3(o, 0, -o),
-                new Vector3(-o, 0, o),  new Vector3(o, 0, o)
-            };
-            case 5:
-                return new[]
+                Debug.Log($"💥 Ô {gameObject.name} bị sụp đổ!");
+                Destroy(gameObject); // xoá hẳn tile
+            }
+            else
             {
-                new Vector3(-o, 0, -o), new Vector3(o, 0, -o),
-                Vector3.zero,
-                new Vector3(-o, 0, o),  new Vector3(o, 0, o)
-            };
-            case 6:
-                return new[]
-            {
-                new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, -o),
-                new Vector3(-o, 0, o),  Vector3.zero + new Vector3(0,0,o), new Vector3(o, 0, o)
-            };
-            default: return new Vector3[0];
+                // Tạo lại chấm mới
+                GenerateDots();
+                Debug.Log($"❄ Ô {gameObject.name} (Blue) giảm xuống còn {dotCount} chấm");
+            }
         }
     }
 
-    // Hàm gọi khi player bước vào ô
-    public void OnEnterTile()
-    {
-        // Bạn có thể thêm hiệu ứng ở đây, ví dụ đổi màu ô:
-        // GetComponent<Renderer>().material.color = Color.white;
-    }
-
-    // Hàm gọi khi player rời ô
+    // ✅ Khi player rời tile
     public void OnLeaveTile()
     {
-        // Ví dụ khôi phục màu cũ:
-        // GetComponent<Renderer>().material.color = originalColor;
+        // Nếu là đất Tuyết (Blue), giảm 1 dot
+        if (CompareTag("Blue"))
+            DecreaseDot();
     }
 
-    // Kiểm tra xem ô này có thể đi vào tại vị trí cụ thể (nếu có dotCount 1x1)
-    //public bool IsBlocked(Vector2Int localPosition)
-    //{
-    //    // Ví dụ kiểm tra ô bị chặn — tạm thời cứ dotCount > 0 là chặn
-    //    return dotCount > 0;
-    //}
+    public void OnEnterTile() { }
+
     public bool IsBlocked(Vector2Int localPos)
     {
-        // Nếu không có dot nào => không chặn
         if (dotCount <= 0) return false;
-
-        // Chuyển dotCount thành pattern dựa theo mặt xúc xắc
-        // Mỗi dot tương ứng với 1 vị trí bị chặn trong lưới 3x3
-        bool[,] blockedPattern = GetDicePattern(dotCount);
-
-        // Nếu vị trí vượt ngoài 3x3, cho phép đi
-        if (localPos.x < 0 || localPos.x > 2 || localPos.y < 0 || localPos.y > 2)
-            return false;
-
-        // Trả về true nếu ô này có chấm
-        return blockedPattern[localPos.x, localPos.y];
+        bool[,] pattern = GetDicePattern(dotCount);
+        if (localPos.x < 0 || localPos.x > 2 || localPos.y < 0 || localPos.y > 2) return false;
+        return pattern[localPos.x, localPos.y];
     }
+
     private bool[,] GetDicePattern(int dots)
     {
         bool[,] grid = new bool[3, 3];
-
         switch (dots)
         {
             case 1: grid[1, 1] = true; break;
@@ -125,10 +95,37 @@ public class TerrainTile : MonoBehaviour
                 grid[2, 0] = true; grid[2, 1] = true; grid[2, 2] = true;
                 break;
         }
-
         return grid;
     }
 
-
-
+    private Vector3[] GetDotPositions(int count)
+    {
+        float o = dotOffset;
+        switch (count)
+        {
+            case 1: return new[] { Vector3.zero };
+            case 2: return new[] { new Vector3(-o, 0, -o), new Vector3(o, 0, o) };
+            case 3: return new[] { new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, o) };
+            case 4:
+                return new[]
+                {
+                    new Vector3(-o,0,-o), new Vector3(o,0,-o),
+                    new Vector3(-o,0,o), new Vector3(o,0,o)
+                };
+            case 5:
+                return new[]
+                {
+                    new Vector3(-o,0,-o), new Vector3(o,0,-o),
+                    Vector3.zero,
+                    new Vector3(-o,0,o), new Vector3(o,0,o)
+                };
+            case 6:
+                return new[]
+                {
+                    new Vector3(-o,0,-o), new Vector3(0,0,-o), new Vector3(o,0,-o),
+                    new Vector3(-o,0,o), new Vector3(0,0,o), new Vector3(o,0,o)
+                };
+            default: return new Vector3[0];
+        }
+    }
 }
