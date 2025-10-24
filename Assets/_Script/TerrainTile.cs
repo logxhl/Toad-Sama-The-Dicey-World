@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class TerrainTile : MonoBehaviour
 {
@@ -8,10 +9,26 @@ public class TerrainTile : MonoBehaviour
     public float dotOffset = 0.25f;      // khoảng cách chấm
 
     private Transform dotsParent;
+    [Header("Coin Settings")]
+    public GameObject coinPrefab;
+    public List<Vector3> coinPositions = new List<Vector3>(); // vị trí coin local
+    private List<GameObject> spawnedCoins = new List<GameObject>();
+    public void GenerateCoins()
+    {
+        if (coinPrefab == null || coinPositions.Count == 0) return;
 
+        foreach (var pos in coinPositions)
+        {
+            GameObject coin = Instantiate(coinPrefab, transform);
+            coin.transform.localPosition = pos + Vector3.up * 0.5f;
+            spawnedCoins.Add(coin);
+            LevelManager.Instance.RegisterCoin(coin);
+        }
+    }
     void Start()
     {
         GenerateDots();
+        GenerateCoins();
     }
 
     // 🧱 Tạo lại chấm theo dotCount hiện tại
