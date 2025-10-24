@@ -38,32 +38,40 @@ public class TerrainTile : MonoBehaviour
         }
     }
 
-    // Giảm dotCount khi rời khỏi ô
-    public void DecreaseDot()
-    {
-        if (dotCount > 0)
-        {
-            dotCount--;
-            if (dotCount == 0)
-            {
-                Debug.Log($"💥 Ô {gameObject.name} bị sụp đổ!");
-                Destroy(gameObject); // xoá hẳn tile
-            }
-            else
-            {
-                // Tạo lại chấm mới
-                GenerateDots();
-                Debug.Log($"❄ Ô {gameObject.name} (Blue) giảm xuống còn {dotCount} chấm");
-            }
-        }
-    }
-
     // ✅ Khi player rời tile
     public void OnLeaveTile()
     {
-        // Nếu là đất Tuyết (Blue), giảm 1 dot
+        // ❄ Nếu là đất Tuyết (Blue): giảm 1 dot, nếu hết -> xóa
         if (CompareTag("Blue"))
+        {
             DecreaseDot();
+            return;
+        }
+
+        // 🌞 Nếu là đất Vàng (Yellow): tăng 1 dot, nếu >6 -> xóa
+        if (CompareTag("Yellow"))
+        {
+            dotCount++;
+            if (dotCount > 6)
+            {
+                Debug.Log($"💥 Ô {gameObject.name} (Yellow) bị sụp do quá 6 chấm!");
+                Destroy(gameObject);
+                return;
+            }
+
+            GenerateDots();
+            Debug.Log($"🟡 Ô {gameObject.name} tăng dotCount lên {dotCount}");
+            return;
+        }
+
+        // 🔴 Nếu là đất Đỏ (Red): lật xúc xắc -> dotCount = 7 - dotCount
+        if (CompareTag("Red"))
+        {
+            dotCount = 7 - dotCount;
+            GenerateDots();
+            Debug.Log($"🔴 Ô {gameObject.name} đổi mặt xúc xắc -> dotCount mới = {dotCount}");
+            return;
+        }
     }
 
     public void OnEnterTile() { }
@@ -76,6 +84,24 @@ public class TerrainTile : MonoBehaviour
         return pattern[localPos.x, localPos.y];
     }
 
+    private void DecreaseDot()
+    {
+        if (dotCount > 0)
+        {
+            dotCount--;
+            if (dotCount == 0)
+            {
+                Debug.Log($"💥 Ô {gameObject.name} bị sụp đổ!");
+                Destroy(gameObject);
+            }
+            else
+            {
+                GenerateDots();
+                Debug.Log($"❄ Ô {gameObject.name} giảm xuống còn {dotCount} chấm");
+            }
+        }
+    }
+
     private bool[,] GetDicePattern(int dots)
     {
         bool[,] grid = new bool[3, 3];
@@ -84,7 +110,10 @@ public class TerrainTile : MonoBehaviour
             case 1: grid[1, 1] = true; break;
             case 2: grid[0, 0] = true; grid[2, 2] = true; break;
             case 3: grid[0, 0] = true; grid[1, 1] = true; grid[2, 2] = true; break;
-            case 4: grid[0, 0] = true; grid[0, 2] = true; grid[2, 0] = true; grid[2, 2] = true; break;
+            case 4:
+                grid[0, 0] = true; grid[0, 2] = true;
+                grid[2, 0] = true; grid[2, 2] = true;
+                break;
             case 5:
                 grid[0, 0] = true; grid[0, 2] = true;
                 grid[1, 1] = true;
@@ -98,41 +127,10 @@ public class TerrainTile : MonoBehaviour
         return grid;
     }
 
-    // private Vector3[] GetDotPositions(int count)
-    // {
-    //     float o = dotOffset;
-    //     switch (count)
-    //     {
-    //         case 1: return new[] { Vector3.zero };
-    //         case 2: return new[] { new Vector3(-o, 0, -o), new Vector3(o, 0, o) };
-    //         case 3: return new[] { new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, o) };
-    //         case 4:
-    //             return new[]
-    //             {
-    //                 new Vector3(-o,0,-o), new Vector3(o,0,-o),
-    //                 new Vector3(-o,0,o), new Vector3(o,0,o)
-    //             };
-    //         case 5:
-    //             return new[]
-    //             {
-    //                 new Vector3(-o,0,-o), new Vector3(o,0,-o),
-    //                 Vector3.zero,
-    //                 new Vector3(-o,0,o), new Vector3(o,0,o)
-    //             };
-    //         case 6:
-    //             return new[]
-    //             {
-    //                 new Vector3(-o,0,-o), new Vector3(0,0,-o), new Vector3(o,0,-o),
-    //                 new Vector3(-o,0,o), new Vector3(0,0,o), new Vector3(o,0,o)
-    //             };
-    //         default: return new Vector3[0];
-    //     }
-    // }
+    // 🎲 Tạo vị trí dot theo hướng xúc xắc thật
     private Vector3[] GetDotPositions(int count)
     {
         float o = dotOffset;
-
-        // Đảo trục Z để hiển thị đúng hướng xúc xắc
         Vector3 P(float x, float z) => new Vector3(x, 0, -z);
 
         switch (count)
@@ -142,25 +140,25 @@ public class TerrainTile : MonoBehaviour
             case 3: return new[] { P(-o, -o), P(0, 0), P(o, o) };
             case 4:
                 return new[]
-                {
-                P(-o,-o), P(o,-o),
-                P(-o,o),  P(o,o)
+            {
+                P(-o, -o), P(o, -o),
+                P(-o,  o), P(o,  o)
             };
             case 5:
                 return new[]
-                {
-                P(-o,-o), P(o,-o),
-                P(0,0),
-                P(-o,o),  P(o,o)
+            {
+                P(-o, -o), P(o, -o),
+                P(0, 0),
+                P(-o,  o), P(o,  o)
             };
             case 6:
                 return new[]
-                {
-                P(-o,-o), P(0,-o), P(o,-o),
-                P(-o,o),  P(0,o),  P(o,o)
+            {
+                // ✅ xếp DỌC (đúng hướng xúc xắc)
+                P(-o, -o), P(-o, 0), P(-o, o),
+                P( o, -o), P( o, 0), P( o, o)
             };
             default: return new Vector3[0];
         }
     }
-
 }
