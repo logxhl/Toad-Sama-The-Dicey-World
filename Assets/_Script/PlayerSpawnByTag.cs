@@ -16,7 +16,7 @@ public class PlayerSpawnByTag : MonoBehaviour
             pos.y += heightOffset;
             transform.position = pos;
 
-            Debug.Log($"✅ Player spawned on land with tag '{startTag}' at {pos}");
+            Debug.Log($"Player spawned on land with tag '{startTag}' at {pos}");
 
             // Cập nhật lại gridPos của player
             GridPlayerMovement gridMove = GetComponent<GridPlayerMovement>();
@@ -27,7 +27,7 @@ public class PlayerSpawnByTag : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"⚠️ Không tìm thấy vùng đất có tag '{startTag}'!");
+            Debug.LogWarning($"Không tìm thấy vùng đất có tag '{startTag}'!");
         }
     }
 }

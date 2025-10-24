@@ -19,7 +19,7 @@ public class TileSoawner : MonoBehaviour
     {
         if (landPrefab == null)
         {
-            Debug.LogError("⚠️ landPrefab chưa được gán!");
+            Debug.LogError("landPrefab chưa được gán!");
             return;
         }
 
@@ -41,7 +41,7 @@ public class TileSoawner : MonoBehaviour
         land.transform.localScale = new Vector3(landSize * cellSize, 0.2f, landSize * cellSize);
         land.name = $"LandBlock_{startPos.x}_{startPos.y}_{landSize}x{landSize}";
 
-        Debug.Log($"✅ Spawned single land block {landSize}x{landSize} at ({startPos.x},{startPos.y})");
+        Debug.Log($"Spawned single land block {landSize}x{landSize} at ({startPos.x},{startPos.y})");
     }
 
     private void OnDrawGizmosSelected()

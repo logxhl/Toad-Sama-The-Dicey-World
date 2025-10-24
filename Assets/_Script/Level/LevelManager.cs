@@ -55,12 +55,12 @@ public class LevelManager : MonoBehaviour
         if (coinCounterText != null)
             coinCounterText.text = remaining.ToString();
 
-        Debug.Log($"🪙 Collected coin. Remaining: {remaining}");
+        Debug.Log($"Collected coin. Remaining: {remaining}");
 
         // Nếu đã thu hết -> chuyển level tiếp theo
         if (remaining <= 0)
         {
-            Debug.Log("🎉 Collected all coins! Loading next level...");
+            Debug.Log("Collected all coins! Loading next level...");
             NextLevel();
         }
     }
@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
 
         if (allCoins.Count == 0)
         {
-            Debug.Log("🎉 Ăn hết coin -> Next Level!");
+            Debug.Log("Ăn hết coin -> Next Level!");
             NextLevel();
         }
     }
@@ -114,7 +114,7 @@ public class LevelManager : MonoBehaviour
             spawnedTiles.Add(newTile);
         }
 
-        // ✅ Spawn coin theo danh sách riêng
+        // Spawn coin theo danh sách riêng
         foreach (var coinPos in data.coinPositions)
         {
             Vector3 pos = new Vector3(coinPos.x, 1.5f, coinPos.y);
@@ -130,17 +130,17 @@ public class LevelManager : MonoBehaviour
         if (levelText != null)
             levelText.text = data.levelName;
 
-        // ✅ Spawn player theo vị trí playerStartPos trong LevelData
+        // Spawn player theo vị trí playerStartPos trong LevelData
         var player = FindObjectOfType<GridPlayerMovement>();
         if (player != null)
         {
             Vector3 startPos = new Vector3(data.playerStartPos.x, 2f, data.playerStartPos.y);
             player.transform.position = startPos;
             player.ForceSyncPosition();
-            Debug.Log($"✅ Player spawn tại {startPos} (từ LevelData)");
+            Debug.Log($"Player spawn tại {startPos} (từ LevelData)");
         }
 
-        // ✅ Cập nhật currentLevelIndex
+        // Cập nhật currentLevelIndex
         currentLevelIndex = index;
     }
 
@@ -150,7 +150,7 @@ public class LevelManager : MonoBehaviour
         Renderer rend = tileObj.GetComponent<Renderer>();
         if (rend == null)
         {
-            Debug.LogWarning($"⚠ Tile {tileObj.name} không có Renderer để gán material!");
+            Debug.LogWarning($"Tile {tileObj.name} không có Renderer để gán material!");
             return;
         }
 
@@ -181,11 +181,11 @@ public class LevelManager : MonoBehaviour
     public void NextLevel()
     {
         int nextIndex = (currentLevelIndex + 1) % levels.Count;
-        // 🔹 Nếu chưa đạt level cao nhất -> lưu vào DataManager
+        // Nếu chưa đạt level cao nhất -> lưu vào DataManager
         if (nextIndex + 1 > DataManager.Ins.GetLevel())
         {
             DataManager.Ins.SaveLevel(nextIndex + 1);
-            Debug.Log($"💾 Đã lưu level mới: {nextIndex + 1}");
+            Debug.Log($"Đã lưu level mới: {nextIndex + 1}");
         }
 
         LoadLevel(nextIndex);

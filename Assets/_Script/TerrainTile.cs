@@ -31,7 +31,7 @@ public class TerrainTile : MonoBehaviour
         GenerateCoins();
     }
 
-    // 🧱 Tạo lại chấm theo dotCount hiện tại
+    // Tạo lại chấm theo dotCount hiện tại
     public void GenerateDots()
     {
         if (dotPrefab == null) return;
@@ -55,51 +55,44 @@ public class TerrainTile : MonoBehaviour
         }
     }
 
-    // ✅ Khi player rời tile
+    // Khi player rời tile
     public void OnLeaveTile()
     {
-        // ❄ Nếu là đất Tuyết (Blue): giảm 1 dot, nếu hết -> xóa
+        // Nếu là đất Tuyết (Blue): giảm 1 dot, nếu hết -> xóa
         if (CompareTag("Blue"))
         {
             DecreaseDot();
             return;
         }
 
-        // 🌞 Nếu là đất Vàng (Yellow): tăng 1 dot, nếu >6 -> xóa
+        // Nếu là đất Vàng (Yellow): tăng 1 dot, nếu >6 -> xóa
         if (CompareTag("Yellow"))
         {
             dotCount++;
             if (dotCount > 6)
             {
-                Debug.Log($"💥 Ô {gameObject.name} (Yellow) bị sụp do quá 6 chấm!");
+                Debug.Log($"Ô {gameObject.name} (Yellow) bị sụp do quá 6 chấm!");
                 Destroy(gameObject);
                 return;
             }
 
             GenerateDots();
-            Debug.Log($"🟡 Ô {gameObject.name} tăng dotCount lên {dotCount}");
+            Debug.Log($"Ô {gameObject.name} tăng dotCount lên {dotCount}");
             return;
         }
 
-        // 🔴 Nếu là đất Đỏ (Red): lật xúc xắc -> dotCount = 7 - dotCount
+        // Nếu là đất Đỏ (Red): lật xúc xắc -> dotCount = 7 - dotCount
         if (CompareTag("Red"))
         {
             dotCount = 7 - dotCount;
             GenerateDots();
-            Debug.Log($"🔴 Ô {gameObject.name} đổi mặt xúc xắc -> dotCount mới = {dotCount}");
+            Debug.Log($"Ô {gameObject.name} đổi mặt xúc xắc -> dotCount mới = {dotCount}");
             return;
         }
     }
 
     public void OnEnterTile() { }
 
-    // public bool IsBlocked(Vector2Int localPos)
-    // {
-    //     if (dotCount <= 0) return false;
-    //     bool[,] pattern = GetDicePattern(dotCount);
-    //     if (localPos.x < 0 || localPos.x > 2 || localPos.y < 0 || localPos.y > 2) return false;
-    //     return pattern[localPos.x, localPos.y];
-    // }
     public bool IsBlocked(Vector2Int localPos)
     {
         if (dotCount <= 0) return false;
@@ -121,13 +114,13 @@ public class TerrainTile : MonoBehaviour
             dotCount--;
             if (dotCount == 0)
             {
-                Debug.Log($"💥 Ô {gameObject.name} bị sụp đổ!");
+                Debug.Log($"Ô {gameObject.name} bị sụp đổ!");
                 Destroy(gameObject);
             }
             else
             {
                 GenerateDots();
-                Debug.Log($"❄ Ô {gameObject.name} giảm xuống còn {dotCount} chấm");
+                Debug.Log($"Ô {gameObject.name} giảm xuống còn {dotCount} chấm");
             }
         }
     }
@@ -157,7 +150,7 @@ public class TerrainTile : MonoBehaviour
         return grid;
     }
 
-    // 🎲 Tạo vị trí dot theo hướng xúc xắc thật
+    // Tạo vị trí dot theo hướng xúc xắc thật
     private Vector3[] GetDotPositions(int count)
     {
         float o = dotOffset;
@@ -184,7 +177,7 @@ public class TerrainTile : MonoBehaviour
             case 6:
                 return new[]
             {
-                // ✅ xếp DỌC (đúng hướng xúc xắc)
+                // xếp DỌC (đúng hướng xúc xắc)
                 P(-o, -o), P(-o, 0), P(-o, o),
                 P( o, -o), P( o, 0), P( o, o)
             };

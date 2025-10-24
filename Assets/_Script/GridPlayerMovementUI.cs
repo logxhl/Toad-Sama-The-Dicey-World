@@ -59,7 +59,7 @@ public class GridPlayerMovement : MonoBehaviour
         // Kiểm tra chướng ngại vật cụ thể (dot)
         if (tile.IsBlocked(nextLocal))
         {
-            Debug.Log($"⚠ Ô {ground.name} bị chặn tại vị trí {nextLocal}");
+            Debug.Log($"Ô {ground.name} bị chặn tại vị trí {nextLocal}");
             return;
         }
 
