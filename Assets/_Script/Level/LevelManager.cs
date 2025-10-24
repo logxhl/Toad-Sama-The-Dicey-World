@@ -181,6 +181,13 @@ public class LevelManager : MonoBehaviour
     public void NextLevel()
     {
         int nextIndex = (currentLevelIndex + 1) % levels.Count;
+        // 🔹 Nếu chưa đạt level cao nhất -> lưu vào DataManager
+        if (nextIndex + 1 > DataManager.Ins.GetLevel())
+        {
+            DataManager.Ins.SaveLevel(nextIndex + 1);
+            Debug.Log($"💾 Đã lưu level mới: {nextIndex + 1}");
+        }
+
         LoadLevel(nextIndex);
     }
 
