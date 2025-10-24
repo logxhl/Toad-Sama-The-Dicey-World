@@ -98,34 +98,69 @@ public class TerrainTile : MonoBehaviour
         return grid;
     }
 
+    // private Vector3[] GetDotPositions(int count)
+    // {
+    //     float o = dotOffset;
+    //     switch (count)
+    //     {
+    //         case 1: return new[] { Vector3.zero };
+    //         case 2: return new[] { new Vector3(-o, 0, -o), new Vector3(o, 0, o) };
+    //         case 3: return new[] { new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, o) };
+    //         case 4:
+    //             return new[]
+    //             {
+    //                 new Vector3(-o,0,-o), new Vector3(o,0,-o),
+    //                 new Vector3(-o,0,o), new Vector3(o,0,o)
+    //             };
+    //         case 5:
+    //             return new[]
+    //             {
+    //                 new Vector3(-o,0,-o), new Vector3(o,0,-o),
+    //                 Vector3.zero,
+    //                 new Vector3(-o,0,o), new Vector3(o,0,o)
+    //             };
+    //         case 6:
+    //             return new[]
+    //             {
+    //                 new Vector3(-o,0,-o), new Vector3(0,0,-o), new Vector3(o,0,-o),
+    //                 new Vector3(-o,0,o), new Vector3(0,0,o), new Vector3(o,0,o)
+    //             };
+    //         default: return new Vector3[0];
+    //     }
+    // }
     private Vector3[] GetDotPositions(int count)
     {
         float o = dotOffset;
+
+        // Đảo trục Z để hiển thị đúng hướng xúc xắc
+        Vector3 P(float x, float z) => new Vector3(x, 0, -z);
+
         switch (count)
         {
-            case 1: return new[] { Vector3.zero };
-            case 2: return new[] { new Vector3(-o, 0, -o), new Vector3(o, 0, o) };
-            case 3: return new[] { new Vector3(-o, 0, -o), Vector3.zero, new Vector3(o, 0, o) };
+            case 1: return new[] { P(0, 0) };
+            case 2: return new[] { P(-o, -o), P(o, o) };
+            case 3: return new[] { P(-o, -o), P(0, 0), P(o, o) };
             case 4:
                 return new[]
                 {
-                    new Vector3(-o,0,-o), new Vector3(o,0,-o),
-                    new Vector3(-o,0,o), new Vector3(o,0,o)
-                };
+                P(-o,-o), P(o,-o),
+                P(-o,o),  P(o,o)
+            };
             case 5:
                 return new[]
                 {
-                    new Vector3(-o,0,-o), new Vector3(o,0,-o),
-                    Vector3.zero,
-                    new Vector3(-o,0,o), new Vector3(o,0,o)
-                };
+                P(-o,-o), P(o,-o),
+                P(0,0),
+                P(-o,o),  P(o,o)
+            };
             case 6:
                 return new[]
                 {
-                    new Vector3(-o,0,-o), new Vector3(0,0,-o), new Vector3(o,0,-o),
-                    new Vector3(-o,0,o), new Vector3(0,0,o), new Vector3(o,0,o)
-                };
+                P(-o,-o), P(0,-o), P(o,-o),
+                P(-o,o),  P(0,o),  P(o,o)
+            };
             default: return new Vector3[0];
         }
     }
+
 }

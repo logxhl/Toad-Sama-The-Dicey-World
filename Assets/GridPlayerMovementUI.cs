@@ -88,4 +88,10 @@ public class GridPlayerMovement : MonoBehaviour
             return hit.collider.gameObject;
         return null;
     }
+    public void ForceSyncPosition()
+    {
+        gridPos.x = Mathf.RoundToInt(transform.position.x / cellSize);
+        gridPos.y = Mathf.RoundToInt(transform.position.z / cellSize);
+    }
+
 }

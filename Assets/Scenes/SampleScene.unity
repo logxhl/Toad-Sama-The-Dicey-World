@@ -1946,8 +1946,8 @@ GameObject:
   - component: {fileID: 1890017556}
   - component: {fileID: 1890017555}
   - component: {fileID: 1890017554}
-  - component: {fileID: 1890017558}
   - component: {fileID: 1890017559}
+  - component: {fileID: 1890017558}
   - component: {fileID: 1890017560}
   m_Layer: 0
   m_Name: Player
@@ -2039,7 +2039,7 @@ Transform:
   m_GameObject: {fileID: 1890017553}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: -5.76, y: 2, z: -0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
