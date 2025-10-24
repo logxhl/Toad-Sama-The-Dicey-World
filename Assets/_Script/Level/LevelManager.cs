@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 [System.Serializable]
 public class TileMaterialData
@@ -30,13 +32,24 @@ public class LevelManager : MonoBehaviour
     private List<GameObject> spawnedCoins = new();
     private int totalCoins;
     private int coinsCollected;
+    public TextMeshProUGUI coinCounterText;
+    public TextMeshProUGUI levelText;
 
 
     public void OnCoinCollected(Coin coin)
     {
+        // Tăng số coin đã thu được
         coinsCollected++;
 
-        if (coinsCollected >= totalCoins)
+        // Cập nhật UI: hiển thị số coin còn lại
+        int remaining = Mathf.Max(0, totalCoins - coinsCollected);
+        if (coinCounterText != null)
+            coinCounterText.text = remaining.ToString();
+
+        Debug.Log($"🪙 Collected coin. Remaining: {remaining}");
+
+        // Nếu đã thu hết -> chuyển level tiếp theo
+        if (remaining <= 0)
         {
             Debug.Log("🎉 Collected all coins! Loading next level...");
             NextLevel();
@@ -66,58 +79,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel(0); // load level đầu tiên
+        // LoadLevel(0); // load level đầu tiên
     }
 
-
-    // public void LoadLevel(int index)
-    // {
-    //     // Clear cũ
-    //     ClearCurrentLevel();
-
-    //     LevelDataAsset data = levels[index];
-
-    //     // Spawn ô đất
-    //     foreach (var tile in data.tiles)
-    //     {
-    //         Vector3 pos = new Vector3(tile.position.x, 0f, tile.position.y);
-    //         GameObject newTile = Instantiate(tilePrefab, pos, Quaternion.identity, tileParent);
-    //         newTile.transform.localPosition = new Vector3(newTile.transform.localPosition.x, 1.05f, newTile.transform.localPosition.z);
-
-    //         // Set màu/tag/dot...
-    //         newTile.tag = tile.tag;
-    //         TerrainTile terrain = newTile.GetComponent<TerrainTile>();
-    //         if (terrain)
-    //         {
-    //             terrain.dotCount = tile.dotCount;
-    //             terrain.GenerateDots();
-    //         }
-    //         // Áp dụng material dựa trên tag
-    //         ApplyMaterialByTag(newTile, tile.tag);
-    //         spawnedTiles.Add(newTile);
-    //     }
-
-    //     // ✅ Spawn coin theo danh sách riêng
-    //     foreach (var coinPos in data.coinPositions)
-    //     {
-    //         Vector3 pos = new Vector3(coinPos.x, 1.5f, coinPos.y);
-    //         GameObject coin = Instantiate(coinPrefab, pos, Quaternion.identity, tileParent);
-    //         spawnedCoins.Add(coin);
-    //     }
-    //     totalCoins = data.coinPositions.Count;
-    //     coinsCollected = 0;
-
-    //     // ✅ Spawn player theo vị trí playerStartPos trong LevelData
-    //     var player = FindObjectOfType<GridPlayerMovement>();
-    //     if (player != null)
-    //     {
-    //         Vector3 startPos = new Vector3(data.playerStartPos.x, 2f, data.playerStartPos.y);
-    //         player.transform.position = startPos;
-    //         player.ForceSyncPosition();
-    //         Debug.Log($"✅ Player spawn tại {startPos} (từ LevelData)");
-    //     }
-
-    // }
     public void LoadLevel(int index)
     {
         // Clear cũ
@@ -154,6 +118,12 @@ public class LevelManager : MonoBehaviour
         }
         totalCoins = data.coinPositions.Count;
         coinsCollected = 0;
+
+        // Cập nhật UI đồng hồ coin và tên level
+        if (coinCounterText != null)
+            coinCounterText.text = totalCoins.ToString();
+        if (levelText != null)
+            levelText.text = data.levelName;
 
         // ✅ Spawn player theo vị trí playerStartPos trong LevelData
         var player = FindObjectOfType<GridPlayerMovement>();
