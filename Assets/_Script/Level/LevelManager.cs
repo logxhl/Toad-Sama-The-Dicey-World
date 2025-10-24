@@ -35,6 +35,15 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI coinCounterText;
     public TextMeshProUGUI levelText;
 
+    public Button restartLevel;
+
+    private void Start()
+    {
+        if (restartLevel != null)
+        {
+            restartLevel.onClick.AddListener(RestartLevel);
+        }
+    }
 
     public void OnCoinCollected(Coin coin)
     {
@@ -77,10 +86,6 @@ public class LevelManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        // LoadLevel(0); // load level đầu tiên
-    }
 
     public void LoadLevel(int index)
     {

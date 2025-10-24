@@ -10,6 +10,8 @@ TagManager:
   - Blue
   - Red
   - Yellow
+  - Coin
+  - anh
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - UI
   - 
   - Ground
-  - 
+  - cam
   - 
   - 
   - 
