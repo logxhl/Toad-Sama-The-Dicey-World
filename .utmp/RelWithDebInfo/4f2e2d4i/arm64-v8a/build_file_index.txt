@@ -1,0 +1,3 @@
+D:\HocUnityLearn\Create with Code\Clone\HoangHaiDang_SproutJourney_minigame\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\HocUnityLearn\Create with Code\Clone\HoangHaiDang_SproutJourney_minigame\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+D:\HocUnityLearn\Create with Code\Clone\HoangHaiDang_SproutJourney_minigame\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
