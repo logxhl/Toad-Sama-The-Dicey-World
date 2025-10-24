@@ -76,13 +76,26 @@ public class TerrainTile : MonoBehaviour
 
     public void OnEnterTile() { }
 
+    // public bool IsBlocked(Vector2Int localPos)
+    // {
+    //     if (dotCount <= 0) return false;
+    //     bool[,] pattern = GetDicePattern(dotCount);
+    //     if (localPos.x < 0 || localPos.x > 2 || localPos.y < 0 || localPos.y > 2) return false;
+    //     return pattern[localPos.x, localPos.y];
+    // }
     public bool IsBlocked(Vector2Int localPos)
     {
         if (dotCount <= 0) return false;
         bool[,] pattern = GetDicePattern(dotCount);
-        if (localPos.x < 0 || localPos.x > 2 || localPos.y < 0 || localPos.y > 2) return false;
-        return pattern[localPos.x, localPos.y];
+
+        // Đảo chiều trục Z nếu cần (vì Unity Z+ là phía trước)
+        int px = localPos.x;
+        int pz = 2 - localPos.y;
+
+        if (px < 0 || px > 2 || pz < 0 || pz > 2) return false;
+        return pattern[px, pz];
     }
+
 
     private void DecreaseDot()
     {
