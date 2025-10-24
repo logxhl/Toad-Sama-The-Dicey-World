@@ -3204,6 +3204,7 @@ GameObject:
   - component: {fileID: 772698721}
   - component: {fileID: 772698720}
   - component: {fileID: 772698719}
+  - component: {fileID: 772698722}
   m_Layer: 5
   m_Name: "Xu\u1ED1ng"
   m_TagString: Untagged
@@ -3274,19 +3275,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 772698720}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1890017558}
-        m_TargetAssemblyTypeName: PlayerGridMovementUI, Assembly-CSharp
-        m_MethodName: MoveDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &772698720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3325,6 +3314,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772698717}
   m_CullTransparentMesh: 1
+--- !u!114 &772698722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772698717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: HoldDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: ReleaseButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &787517385
 GameObject:
   m_ObjectHideFlags: 0
@@ -4567,6 +4601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2948425570052017362, guid: 8a3a722fb71465a469d88c8921f199b7, type: 3}
   tileParent: {fileID: 200410275}
+  coinPrefab: {fileID: 1025533321512431184, guid: 4a8b7ba516dfa854fa26abc73d8a7c56, type: 3}
   levels:
   - {fileID: 11400000, guid: 0eb1b44d5a6ce804a99171f7e67adf20, type: 2}
   - {fileID: 11400000, guid: b6a33f6b3414fc94bb6a02ae244dd1e4, type: 2}
@@ -4584,10 +4619,10 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 6e736c13c3652a14fa2bb7854fe6a356, type: 2}
   - tag: Red
     material: {fileID: 2100000, guid: 87ad9743adf13eb41970778fa8f2bf48, type: 2}
-  coinPrefab: {fileID: 1025533321512431184, guid: 4a8b7ba516dfa854fa26abc73d8a7c56, type: 3}
   coinCounterText: {fileID: 1988187776}
   levelText: {fileID: 135853154}
   restartLevel: {fileID: 1355358701}
+  player: {fileID: 1890017558}
 --- !u!4 &1131840843
 Transform:
   m_ObjectHideFlags: 0
@@ -5257,6 +5292,7 @@ GameObject:
   - component: {fileID: 1439019449}
   - component: {fileID: 1439019448}
   - component: {fileID: 1439019447}
+  - component: {fileID: 1439019450}
   m_Layer: 5
   m_Name: "Ph\u1EA3i"
   m_TagString: Untagged
@@ -5327,19 +5363,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1439019448}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1890017558}
-        m_TargetAssemblyTypeName: PlayerGridMovementUI, Assembly-CSharp
-        m_MethodName: MoveRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1439019448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5378,6 +5402,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439019445}
   m_CullTransparentMesh: 1
+--- !u!114 &1439019450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439019445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: HoldRight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: ReleaseButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1439693692
 GameObject:
   m_ObjectHideFlags: 0
@@ -5717,19 +5786,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1534895574}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1890017558}
-        m_TargetAssemblyTypeName: GridPlayerMovementUI, Assembly-CSharp
-        m_MethodName: MoveUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1534895574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5785,9 +5842,25 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1890017558}
-          m_TargetAssemblyTypeName: GridPlayerMovement, Assembly-CSharp
-          m_MethodName: MoveUp
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: HoldUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: ReleaseButton
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5929,6 +6002,7 @@ GameObject:
   - component: {fileID: 1617993168}
   - component: {fileID: 1617993167}
   - component: {fileID: 1617993166}
+  - component: {fileID: 1617993169}
   m_Layer: 5
   m_Name: "Tr\xE1i"
   m_TagString: Untagged
@@ -5999,19 +6073,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1617993167}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1890017558}
-        m_TargetAssemblyTypeName: PlayerGridMovementUI, Assembly-CSharp
-        m_MethodName: MoveLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1617993167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6050,6 +6112,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617993164}
   m_CullTransparentMesh: 1
+--- !u!114 &1617993169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617993164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: HoldLeft
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1972754061}
+          m_TargetAssemblyTypeName: UIManager_HoldMove, Assembly-CSharp
+          m_MethodName: ReleaseButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1622725187
 GameObject:
   m_ObjectHideFlags: 0
@@ -7045,6 +7152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellSize: 1
+  moveSpeed: 5
   checkHeight: 2
   groundLayer:
     serializedVersion: 2
@@ -7236,6 +7344,7 @@ GameObject:
   - component: {fileID: 1972754059}
   - component: {fileID: 1972754058}
   - component: {fileID: 1972754057}
+  - component: {fileID: 1972754061}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7334,6 +7443,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1972754061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972754056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf1a1c2013c9674aa15f3253d20b059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1890017558}
+  holdInterval: 0.25
 --- !u!1 &1978981373
 GameObject:
   m_ObjectHideFlags: 0

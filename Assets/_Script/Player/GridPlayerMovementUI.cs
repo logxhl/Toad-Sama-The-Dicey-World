@@ -1,80 +1,108 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class GridPlayerMovement : MonoBehaviour
 {
     [Header("Grid Settings")]
     public float cellSize = 1f;
+    public float moveSpeed = 6f;          // tốc độ (lớn = nhanh)
     public float checkHeight = 2f;
     public LayerMask groundLayer;
     public string[] walkableTags = { "Green", "Red", "Blue", "Yellow", "Start" };
 
-    private Vector2Int gridPos;          // vị trí tuyệt đối của player trong lưới
-    private GameObject lastGround;       // ô đất hiện tại
-    private TerrainTile currentTile;     // tile mà player đang đứng trên
-    private Vector2Int localPos;         // vị trí trong 3×3 của tile hiện tại (0..2,0..2)
+    // internal state
+    private Vector2Int gridPos;
+    private TerrainTile currentTile;
+    private GameObject lastGround;
+    private bool isMoving = false;
 
-    void Start()
+    // expose để UI kiểm tra (read-only)
+    public bool IsMoving => isMoving;
+
+    private Coroutine moveCoroutine = null;
+
+    private void Start()
     {
+        // init gridPos từ vị trí hiện tại
         gridPos.x = Mathf.RoundToInt(transform.position.x / cellSize);
         gridPos.y = Mathf.RoundToInt(transform.position.z / cellSize);
         UpdatePlayerPosition();
 
-        lastGround = GetCurrentGround();
-        if (lastGround != null)
-            currentTile = lastGround.GetComponent<TerrainTile>();
+        var ground = GetCurrentGround();
+        if (ground) currentTile = ground.GetComponent<TerrainTile>();
     }
 
-    public void MoveUp() => TryMove(Vector2Int.up);
-    public void MoveDown() => TryMove(Vector2Int.down);
-    public void MoveLeft() => TryMove(Vector2Int.left);
-    public void MoveRight() => TryMove(Vector2Int.right);
-
-    private void TryMove(Vector2Int dir)
+    // public API cho UIManager gọi
+    public void TryMoveSmooth(Vector2Int dir)
     {
-        Vector2Int target = gridPos + dir;
-        Vector3 targetPos = new Vector3(target.x * cellSize, transform.position.y + checkHeight, target.y * cellSize);
+        if (isMoving) return;
 
-        // Raycast kiểm tra có ô đất không
-        if (!Physics.Raycast(targetPos, Vector3.down, out RaycastHit hit, checkHeight * 2, groundLayer))
+        Vector2Int target = gridPos + dir;
+        Vector3 checkPos = new Vector3(target.x * cellSize, transform.position.y + checkHeight, target.y * cellSize);
+
+        if (!Physics.Raycast(checkPos, Vector3.down, out RaycastHit hit, checkHeight * 2, groundLayer))
             return;
 
         GameObject ground = hit.collider.gameObject;
 
-        // Kiểm tra tag hợp lệ
+        // tag check
         bool canWalk = false;
         foreach (string tag in walkableTags)
             if (ground.CompareTag(tag)) { canWalk = true; break; }
         if (!canWalk) return;
 
-        // Lấy tile của ô này
-        TerrainTile tile = ground.GetComponent<TerrainTile>();
-        if (tile == null) return;
+        TerrainTile newTile = ground.GetComponent<TerrainTile>();
+        if (newTile == null) return;
 
-        // Tính vị trí con (local 3x3)
-        Vector3 localOffset = targetPos - ground.transform.position;
-        int lx = Mathf.Clamp(Mathf.RoundToInt(localOffset.x / (cellSize / 1f)) + 1, 0, 2);
-        int ly = Mathf.Clamp(Mathf.RoundToInt(localOffset.z / (cellSize / 1f)) + 1, 0, 2);
-        Vector2Int nextLocal = new(lx, ly);
+        // tính vị trí local để check dot pattern
+        Vector3 localOffset = checkPos - ground.transform.position;
+        int lx = Mathf.Clamp(Mathf.FloorToInt((localOffset.x + (cellSize * 0.5f)) / (cellSize / 3f)), 0, 2);
+        int ly = Mathf.Clamp(Mathf.FloorToInt((localOffset.z + (cellSize * 0.5f)) / (cellSize / 3f)), 0, 2);
+        Vector2Int nextLocal = new Vector2Int(lx, ly);
 
-        // Kiểm tra chướng ngại vật cụ thể (dot)
-        if (tile.IsBlocked(nextLocal))
+        if (newTile.IsBlocked(nextLocal))
         {
-            Debug.Log($"Ô {ground.name} bị chặn tại vị trí {nextLocal}");
+            Debug.Log($"Ô {ground.name} bị chặn tại {nextLocal}");
             return;
         }
 
-        // Nếu player rời tile cũ
-        if (currentTile != tile && currentTile != null)
-            currentTile.OnLeaveTile();
+        // bắt đầu di chuyển
+        moveCoroutine = StartCoroutine(MoveSmooth(target, newTile));
+    }
 
-        // Di chuyển player
+    private IEnumerator MoveSmooth(Vector2Int target, TerrainTile newTile)
+    {
+        isMoving = true;
+
+        // Lưu lại tile cũ để xử lý sau
+        TerrainTile oldTile = currentTile;
+
+        Vector3 start = transform.position;
+        Vector3 end = new Vector3(target.x * cellSize, transform.position.y, target.y * cellSize);
+        float t = 0f;
+        float duration = 1f / moveSpeed;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            transform.position = Vector3.Lerp(start, end, Mathf.SmoothStep(0f, 1f, t));
+            yield return null;
+        }
+
+        transform.position = end;
         gridPos = target;
-        UpdatePlayerPosition();
 
-        // Cập nhật tile mới
-        currentTile = tile;
-        tile.OnEnterTile();
-        lastGround = ground;
+        // Sau khi di chuyển hoàn toàn → gọi OnLeaveTile cho tile cũ
+        if (oldTile != null && oldTile != newTile)
+            oldTile.OnLeaveTile();
+
+        // Cập nhật tile mới và gọi OnEnterTile
+        currentTile = newTile;
+        currentTile.OnEnterTile();
+
+        lastGround = GetCurrentGround();
+        isMoving = false;
+        moveCoroutine = null;
     }
 
     private void UpdatePlayerPosition()
@@ -88,10 +116,34 @@ public class GridPlayerMovement : MonoBehaviour
             return hit.collider.gameObject;
         return null;
     }
+
+    // gọi để sync gridPos và cập nhật currentTile từ vị trí world hiện tại
     public void ForceSyncPosition()
     {
         gridPos.x = Mathf.RoundToInt(transform.position.x / cellSize);
         gridPos.y = Mathf.RoundToInt(transform.position.z / cellSize);
+
+        lastGround = GetCurrentGround();
+        if (lastGround != null)
+            currentTile = lastGround.GetComponent<TerrainTile>();
     }
 
+    // phương thức công khai để LevelManager đặt player vào vị trí start an toàn
+    public void PlaceAt(Vector3 worldPos)
+    {
+        // dừng mọi coroutine di chuyển
+        StopMovementCoroutines();
+
+        transform.position = worldPos;
+        ForceSyncPosition();
+    }
+
+    // dừng coroutine di chuyển (gọi trước khi đặt vị trí)
+    public void StopMovementCoroutines()
+    {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+        moveCoroutine = null;
+        isMoving = false;
+    }
 }

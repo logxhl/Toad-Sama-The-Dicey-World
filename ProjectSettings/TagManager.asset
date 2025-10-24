@@ -12,6 +12,7 @@ TagManager:
   - Yellow
   - Coin
   - anh
+  - Obstacle
   layers:
   - Default
   - TransparentFX

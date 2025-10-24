@@ -6,7 +6,12 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            LevelManager.Instance.OnCoinCollected(this);
+            // Gọi hàm mới trong LevelManager
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.CollectCoin(gameObject);
+            }
+
             Destroy(gameObject);
         }
     }
