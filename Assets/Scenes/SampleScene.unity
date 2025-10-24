@@ -1530,6 +1530,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0eb1b44d5a6ce804a99171f7e67adf20, type: 2}
   - {fileID: 11400000, guid: b6a33f6b3414fc94bb6a02ae244dd1e4, type: 2}
   - {fileID: 11400000, guid: 1a0175be4d8e53645ae5e1854ac97427, type: 2}
+  - {fileID: 11400000, guid: 6aca213e70eaef643adf0e85067b7be6, type: 2}
+  - {fileID: 11400000, guid: e402bf2735d1b1743a64b59ceb26bcb0, type: 2}
   tileMaterials:
   - tag: Start
     material: {fileID: 2100000, guid: 62374296a791fe345989bc5e0b317e71, type: 2}
@@ -2385,7 +2387,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 87ad9743adf13eb41970778fa8f2bf48, type: 2}
+  - {fileID: 2100000, guid: 41a9462a4c4966044b7fe725b609fd29, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
