@@ -6,8 +6,7 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // UIManager.Instance.UpdateSproutCount(+1); // cộng 1 sprout
-            LevelManager.Instance.CollectCoin(this);
+            LevelManager.Instance.OnCoinCollected(this);
             Destroy(gameObject);
         }
     }

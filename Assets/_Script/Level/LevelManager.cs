@@ -26,7 +26,22 @@ public class LevelManager : MonoBehaviour
     private int currentLevelIndex = 0;
     private List<GameObject> allCoins = new List<GameObject>();
     private int collectedCoins = 0;
+    public GameObject coinPrefab;
+    private List<GameObject> spawnedCoins = new();
+    private int totalCoins;
+    private int coinsCollected;
 
+
+    public void OnCoinCollected(Coin coin)
+    {
+        coinsCollected++;
+
+        if (coinsCollected >= totalCoins)
+        {
+            Debug.Log("🎉 Collected all coins! Loading next level...");
+            NextLevel();
+        }
+    }
     public void RegisterCoin(GameObject coin)
     {
         allCoins.Add(coin);
@@ -54,26 +69,22 @@ public class LevelManager : MonoBehaviour
         LoadLevel(0); // load level đầu tiên
     }
 
+
     public void LoadLevel(int index)
     {
-        if (index < 0 || index >= levels.Count)
-        {
-            Debug.LogError($"❌ Level index {index} không tồn tại!");
-            return;
-        }
-
+        // Clear cũ
         ClearCurrentLevel();
 
         LevelDataAsset data = levels[index];
-        Debug.Log($"🔹 Đang load: {data.levelName}");
 
+        // Spawn ô đất
         foreach (var tile in data.tiles)
         {
             Vector3 pos = new Vector3(tile.position.x, 0f, tile.position.y);
             GameObject newTile = Instantiate(tilePrefab, pos, Quaternion.identity, tileParent);
             newTile.transform.localPosition = new Vector3(newTile.transform.localPosition.x, 1.05f, newTile.transform.localPosition.z);
 
-            // Cài tag, dotCount
+            // Set màu/tag/dot...
             newTile.tag = tile.tag;
             TerrainTile terrain = newTile.GetComponent<TerrainTile>();
             if (terrain)
@@ -81,38 +92,21 @@ public class LevelManager : MonoBehaviour
                 terrain.dotCount = tile.dotCount;
                 terrain.GenerateDots();
             }
-
-            // 🔹 Gán material tương ứng theo tag
+            // Áp dụng material dựa trên tag
             ApplyMaterialByTag(newTile, tile.tag);
-
             spawnedTiles.Add(newTile);
-            if (tile.hasCoin && terrain.coinPrefab != null)
-            {
-                terrain.coinPositions.Add(tile.coinLocalPos);
-                terrain.GenerateCoins();
-            }
-
         }
-        allCoins.Clear();
-        collectedCoins = 0;
 
-
-        currentLevelIndex = index;
-
-        // Spawn player tại ô có tag "Start"
-        GameObject startTile = GameObject.FindGameObjectWithTag("Start");
-        if (startTile != null)
+        // ✅ Spawn coin theo danh sách riêng
+        foreach (var coinPos in data.coinPositions)
         {
-            var player = FindObjectOfType<GridPlayerMovement>();
-            if (player != null)
-            {
-                Vector3 pos = startTile.transform.position;
-                pos.y += 2f;
-                player.transform.position = pos;
-                player.ForceSyncPosition();
-                Debug.Log($"✅ Player spawn tại {pos}");
-            }
+            Vector3 pos = new Vector3(coinPos.x, 1.5f, coinPos.y);
+            GameObject coin = Instantiate(coinPrefab, pos, Quaternion.identity, tileParent);
+            spawnedCoins.Add(coin);
         }
+        totalCoins = data.coinPositions.Count;
+        coinsCollected = 0;
+
     }
 
     private void ApplyMaterialByTag(GameObject tileObj, string tag)
