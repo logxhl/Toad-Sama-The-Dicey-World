@@ -11,4 +11,6 @@ public class LevelDataAsset : ScriptableObject
     public List<TerrainTileData> tiles = new List<TerrainTileData>();
     // 🪙 Thêm danh sách vị trí coin (tọa độ x,z)
     public List<Vector2Int> coinPositions = new List<Vector2Int>();
+    // 📍 Vị trí player khi bắt đầu level
+    public Vector2Int playerStartPos = Vector2Int.zero;
 }

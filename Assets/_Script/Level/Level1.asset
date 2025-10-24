@@ -15,7 +15,7 @@ MonoBehaviour:
   levelName: Level 1
   tiles:
   - position: {x: -3, y: 0}
-    tag: Blue
+    tag: Green
     dotCount: 2
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
@@ -31,3 +31,4 @@ MonoBehaviour:
     coinLocalPos: {x: 0, y: 0, z: 0}
   coinPositions:
   - {x: 4, y: 1}
+  playerStartPos: {x: -3, y: 0}

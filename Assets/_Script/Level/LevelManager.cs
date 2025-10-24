@@ -70,6 +70,54 @@ public class LevelManager : MonoBehaviour
     }
 
 
+    // public void LoadLevel(int index)
+    // {
+    //     // Clear cũ
+    //     ClearCurrentLevel();
+
+    //     LevelDataAsset data = levels[index];
+
+    //     // Spawn ô đất
+    //     foreach (var tile in data.tiles)
+    //     {
+    //         Vector3 pos = new Vector3(tile.position.x, 0f, tile.position.y);
+    //         GameObject newTile = Instantiate(tilePrefab, pos, Quaternion.identity, tileParent);
+    //         newTile.transform.localPosition = new Vector3(newTile.transform.localPosition.x, 1.05f, newTile.transform.localPosition.z);
+
+    //         // Set màu/tag/dot...
+    //         newTile.tag = tile.tag;
+    //         TerrainTile terrain = newTile.GetComponent<TerrainTile>();
+    //         if (terrain)
+    //         {
+    //             terrain.dotCount = tile.dotCount;
+    //             terrain.GenerateDots();
+    //         }
+    //         // Áp dụng material dựa trên tag
+    //         ApplyMaterialByTag(newTile, tile.tag);
+    //         spawnedTiles.Add(newTile);
+    //     }
+
+    //     // ✅ Spawn coin theo danh sách riêng
+    //     foreach (var coinPos in data.coinPositions)
+    //     {
+    //         Vector3 pos = new Vector3(coinPos.x, 1.5f, coinPos.y);
+    //         GameObject coin = Instantiate(coinPrefab, pos, Quaternion.identity, tileParent);
+    //         spawnedCoins.Add(coin);
+    //     }
+    //     totalCoins = data.coinPositions.Count;
+    //     coinsCollected = 0;
+
+    //     // ✅ Spawn player theo vị trí playerStartPos trong LevelData
+    //     var player = FindObjectOfType<GridPlayerMovement>();
+    //     if (player != null)
+    //     {
+    //         Vector3 startPos = new Vector3(data.playerStartPos.x, 2f, data.playerStartPos.y);
+    //         player.transform.position = startPos;
+    //         player.ForceSyncPosition();
+    //         Debug.Log($"✅ Player spawn tại {startPos} (từ LevelData)");
+    //     }
+
+    // }
     public void LoadLevel(int index)
     {
         // Clear cũ
@@ -107,29 +155,20 @@ public class LevelManager : MonoBehaviour
         totalCoins = data.coinPositions.Count;
         coinsCollected = 0;
 
-        // Di chuyển player về ô có tag "Start"
-        GameObject startTile = null;
-        foreach (var tileObj in spawnedTiles)
+        // ✅ Spawn player theo vị trí playerStartPos trong LevelData
+        var player = FindObjectOfType<GridPlayerMovement>();
+        if (player != null)
         {
-            if (tileObj.CompareTag("Start"))
-            {
-                startTile = tileObj;
-                break;
-            }
+            Vector3 startPos = new Vector3(data.playerStartPos.x, 2f, data.playerStartPos.y);
+            player.transform.position = startPos;
+            player.ForceSyncPosition();
+            Debug.Log($"✅ Player spawn tại {startPos} (từ LevelData)");
         }
-        if (startTile != null)
-        {
-            var player = FindObjectOfType<GridPlayerMovement>();
-            if (player != null)
-            {
-                Vector3 pos = startTile.transform.position;
-                pos.y += 2f;
-                player.transform.position = pos;
-                player.ForceSyncPosition();
-                Debug.Log($"✅ Player spawn tại {pos}");
-            }
-        }
+
+        // ✅ Cập nhật currentLevelIndex
+        currentLevelIndex = index;
     }
+
 
     private void ApplyMaterialByTag(GameObject tileObj, string tag)
     {

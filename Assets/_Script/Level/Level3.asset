@@ -10,29 +10,52 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dd3dd37bd3bdf549a04d86bce40be4e, type: 3}
-  m_Name: Level2 1
+  m_Name: Level3
   m_EditorClassIdentifier: 
-  levelName: Level 2
+  levelName: Level 3
   tiles:
   - position: {x: -3, y: 0}
-    tag: Start
-    dotCount: 4
+    tag: Blue
+    dotCount: 2
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
   - position: {x: 0, y: 0}
     tag: Blue
-    dotCount: 4
+    dotCount: 6
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
   - position: {x: 3, y: 0}
-    tag: Green
-    dotCount: 1
+    tag: Blue
+    dotCount: 5
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
   - position: {x: 6, y: 0}
-    tag: Blue
+    tag: Green
+    dotCount: 4
+    hasCoin: 0
+    coinLocalPos: {x: 0, y: 0, z: 0}
+  - position: {x: 0, y: 3}
+    tag: Green
+    dotCount: 4
+    hasCoin: 0
+    coinLocalPos: {x: 0, y: 0, z: 0}
+  - position: {x: 0, y: -3}
+    tag: Yellow
+    dotCount: 1
+    hasCoin: 0
+    coinLocalPos: {x: 0, y: 0, z: 0}
+  - position: {x: 3, y: 3}
+    tag: Yellow
+    dotCount: 3
+    hasCoin: 0
+    coinLocalPos: {x: 0, y: 0, z: 0}
+  - position: {x: -3, y: -3}
+    tag: Green
     dotCount: 3
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
   coinPositions:
   - {x: 7, y: 0}
+  - {x: 2, y: 0}
+  - {x: 4, y: 3}
+  playerStartPos: {x: -3, y: 0}
