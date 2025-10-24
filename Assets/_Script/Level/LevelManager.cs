@@ -107,6 +107,28 @@ public class LevelManager : MonoBehaviour
         totalCoins = data.coinPositions.Count;
         coinsCollected = 0;
 
+        // Di chuyển player về ô có tag "Start"
+        GameObject startTile = null;
+        foreach (var tileObj in spawnedTiles)
+        {
+            if (tileObj.CompareTag("Start"))
+            {
+                startTile = tileObj;
+                break;
+            }
+        }
+        if (startTile != null)
+        {
+            var player = FindObjectOfType<GridPlayerMovement>();
+            if (player != null)
+            {
+                Vector3 pos = startTile.transform.position;
+                pos.y += 2f;
+                player.transform.position = pos;
+                player.ForceSyncPosition();
+                Debug.Log($"✅ Player spawn tại {pos}");
+            }
+        }
     }
 
     private void ApplyMaterialByTag(GameObject tileObj, string tag)

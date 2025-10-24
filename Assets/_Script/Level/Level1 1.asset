@@ -22,7 +22,7 @@ MonoBehaviour:
   - position: {x: 0, y: 3}
     tag: Green
     dotCount: 2
-    hasCoin: 1
+    hasCoin: 0
     coinLocalPos: {x: 0, y: 1, z: 0}
   - position: {x: -3, y: 0}
     tag: Blue
@@ -30,4 +30,5 @@ MonoBehaviour:
     hasCoin: 0
     coinLocalPos: {x: 0, y: 0, z: 0}
   coinPositions:
-  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 1, y: 3}
